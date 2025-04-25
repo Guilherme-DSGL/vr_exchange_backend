@@ -10,94 +10,97 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestShoudReturnAValidTranscation(t *testing.T) {
-	transaction, err := domain.NewTransaction(
-		uuid.NewString(),
-		"A valid description",
-		time.Now(),
-		2,
-	)
+func TestNewService(t *testing.T) {
 
-	assert.Empty(t, err)
-	assert.NotEmpty(t, transaction)
-}
+	t.Run("Shoud return a valid transcation", func(t *testing.T) {
+		transaction, err := domain.NewTransaction(
+			uuid.NewString(),
+			"A valid description",
+			time.Now(),
+			2,
+		)
 
-func TestShoudReturnErrorWhenValueIsNegative(t *testing.T) {
-	transaction, err := domain.NewTransaction(
-		uuid.NewString(),
-		"A valid description",
-		time.Now(),
-		-12,
-	)
+		assert.NoError(t, err)
+		assert.NotEmpty(t, transaction)
+	})
 
-	assert.Empty(t, transaction)
-	assert.NotEmpty(t, err)
-	assert.Equal(t, domain.ErrTransactionInvalidValue, err)
-}
+	t.Run("Shoud return error when value is negative", func(t *testing.T) {
+		transaction, err := domain.NewTransaction(
+			uuid.NewString(),
+			"A valid description",
+			time.Now(),
+			-12,
+		)
 
-func TestShoudReturnErrorWhenValueIsInvalidFormat(t *testing.T) {
-	transaction, err := domain.NewTransaction(
-		uuid.NewString(),
-		"A valid description",
-		time.Now(),
-		20,
-	)
+		assert.Empty(t, transaction)
+		assert.Error(t, err)
+		assert.Equal(t, domain.ErrTransactionInvalidValue, err)
+	})
 
-	assert.Empty(t, err)
-	assert.NotEmpty(t, transaction)
-	assert.Equal(t, 20.0, transaction.Value)
-}
+	t.Run("Shoud return error when value is invalid format", func(t *testing.T) {
+		transaction, err := domain.NewTransaction(
+			uuid.NewString(),
+			"A valid description",
+			time.Now(),
+			20,
+		)
 
-func TestShoudReturnErrorWhenDescriptionIsEmpty(t *testing.T) {
-	transaction, err := domain.NewTransaction(
-		uuid.NewString(),
-		"",
-		time.Now(),
-		20,
-	)
+		assert.Empty(t, err)
+		assert.NotEmpty(t, transaction)
+		assert.Equal(t, 20.0, transaction.Value)
+	})
 
-	assert.Empty(t, transaction)
-	assert.NotEmpty(t, err)
-	assert.Equal(t, domain.ErrTransactionEmptyDescription, err)
+	t.Run("Shoud return error when description is empty", func(t *testing.T) {
+		transaction, err := domain.NewTransaction(
+			uuid.NewString(),
+			"",
+			time.Now(),
+			20,
+		)
 
-}
+		assert.Empty(t, transaction)
+		assert.Error(t, err)
+		assert.Equal(t, domain.ErrTransactionEmptyDescription, err)
 
-func TestShoudReturnErrorWhenDescriptionIsLongerThan50Characters(t *testing.T) {
-	invalidDescription := strings.Repeat("a", 51)
-	transaction, err := domain.NewTransaction(
-		uuid.NewString(),
-		invalidDescription,
-		time.Now(),
-		20,
-	)
+	})
 
-	assert.Empty(t, transaction)
-	assert.NotEmpty(t, err)
-	assert.Equal(t, domain.ErrTransactionTooLongDescription, err)
-}
+	t.Run("Shoud return error when description is longer than 50 characters", func(t *testing.T) {
+		invalidDescription := strings.Repeat("a", 51)
+		transaction, err := domain.NewTransaction(
+			uuid.NewString(),
+			invalidDescription,
+			time.Now(),
+			20,
+		)
 
-func TestShoudReturnErrorWhenIdIsEmpty(t *testing.T) {
-	transaction, err := domain.NewTransaction(
-		"",
-		"",
-		time.Time{},
-		20,
-	)
+		assert.Empty(t, transaction)
+		assert.Error(t, err)
+		assert.Equal(t, domain.ErrTransactionTooLongDescription, err)
+	})
 
-	assert.Empty(t, transaction)
-	assert.NotEmpty(t, err)
-	assert.Equal(t, domain.ErrTransactionEmptyID, err)
-}
+	t.Run("Shoud return error when uid is empty", func(t *testing.T) {
+		transaction, err := domain.NewTransaction(
+			"",
+			"",
+			time.Time{},
+			20,
+		)
 
-func TestShoudReturnErrorWhenDateIsValid(t *testing.T) {
-	transaction, err := domain.NewTransaction(
-		uuid.NewString(),
-		"A valid description",
-		time.Time{},
-		20,
-	)
+		assert.Empty(t, transaction)
+		assert.Error(t, err)
+		assert.Equal(t, domain.ErrTransactionEmptyID, err)
+	})
 
-	assert.Empty(t, transaction)
-	assert.NotEmpty(t, err)
-	assert.Equal(t, domain.ErrTransactionInvalidDate, err)
+	t.Run("Shoud return error when date is valid", func(t *testing.T) {
+		transaction, err := domain.NewTransaction(
+			uuid.NewString(),
+			"A valid description",
+			time.Time{},
+			20,
+		)
+
+		assert.Empty(t, transaction)
+		assert.Error(t, err)
+		assert.Equal(t, domain.ErrTransactionInvalidDate, err)
+	})
 }
