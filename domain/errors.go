@@ -1,8 +1,14 @@
 package domain
 
-import "errors"
+import (
+	"errors"
+)
 
 var (
+	ErrInternalServerError = errors.New("internal server error")
+	ErrNotFound            = errors.New("not found error")
+
+	// Transaction
 	ErrTransactionEmptyID            = errors.New("id should not be null")
 	ErrTransactionEmptyDescription   = errors.New("description should not be empty or null")
 	ErrTransactionTooLongDescription = errors.New("description should not be longer than 50 characters")
