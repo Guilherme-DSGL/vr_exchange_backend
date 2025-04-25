@@ -12,7 +12,7 @@ import (
 
 func TestShoudReturnAValidTranscation(t *testing.T) {
 	transaction, err := domain.NewTransaction(
-		uuid.New().String(),
+		uuid.NewString(),
 		"A valid description",
 		time.Now(),
 		2,
@@ -24,7 +24,7 @@ func TestShoudReturnAValidTranscation(t *testing.T) {
 
 func TestShoudReturnErrorWhenValueIsNegative(t *testing.T) {
 	transaction, err := domain.NewTransaction(
-		uuid.New().String(),
+		uuid.NewString(),
 		"A valid description",
 		time.Now(),
 		-12,
@@ -37,7 +37,7 @@ func TestShoudReturnErrorWhenValueIsNegative(t *testing.T) {
 
 func TestShoudReturnErrorWhenValueIsInvalidFormat(t *testing.T) {
 	transaction, err := domain.NewTransaction(
-		uuid.New().String(),
+		uuid.NewString(),
 		"A valid description",
 		time.Now(),
 		20,
@@ -50,7 +50,7 @@ func TestShoudReturnErrorWhenValueIsInvalidFormat(t *testing.T) {
 
 func TestShoudReturnErrorWhenDescriptionIsEmpty(t *testing.T) {
 	transaction, err := domain.NewTransaction(
-		uuid.New().String(),
+		uuid.NewString(),
 		"",
 		time.Now(),
 		20,
@@ -65,7 +65,7 @@ func TestShoudReturnErrorWhenDescriptionIsEmpty(t *testing.T) {
 func TestShoudReturnErrorWhenDescriptionIsLongerThan50Characters(t *testing.T) {
 	invalidDescription := strings.Repeat("a", 51)
 	transaction, err := domain.NewTransaction(
-		uuid.New().String(),
+		uuid.NewString(),
 		invalidDescription,
 		time.Now(),
 		20,
@@ -91,7 +91,7 @@ func TestShoudReturnErrorWhenIdIsEmpty(t *testing.T) {
 
 func TestShoudReturnErrorWhenDateIsValid(t *testing.T) {
 	transaction, err := domain.NewTransaction(
-		uuid.New().String(),
+		uuid.NewString(),
 		"A valid description",
 		time.Time{},
 		20,

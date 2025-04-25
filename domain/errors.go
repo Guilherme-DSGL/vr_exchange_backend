@@ -7,7 +7,7 @@ import (
 var (
 	ErrInternalServerError = errors.New("internal server error")
 	ErrNotFound            = errors.New("not found error")
-
+	ErrConflict            = errors.New("conflict error the same identifier already exists")
 	// Transaction
 	ErrTransactionEmptyID            = errors.New("id should not be null")
 	ErrTransactionEmptyDescription   = errors.New("description should not be empty or null")
