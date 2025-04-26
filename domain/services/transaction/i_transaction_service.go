@@ -6,6 +6,7 @@ import (
 	"github.com/Guilherme-DSGL/purchase_transaction_backend/domain/entities"
 )
 
+//go:generate mockery --name ITransactionService
 type ITransactionService interface {
 	Save(ctx context.Context, t *entities.Transaction) error
 	Fetch(ctx context.Context, cursor string, limit int64) ([]entities.Transaction, string, error)

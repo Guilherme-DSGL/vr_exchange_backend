@@ -6,6 +6,7 @@ import (
 	"github.com/Guilherme-DSGL/purchase_transaction_backend/domain"
 	"github.com/Guilherme-DSGL/purchase_transaction_backend/domain/entities"
 	irepo "github.com/Guilherme-DSGL/purchase_transaction_backend/domain/repositories"
+	"github.com/Guilherme-DSGL/purchase_transaction_backend/utils"
 )
 
 type TransactionService struct {
@@ -24,6 +25,7 @@ func (ts *TransactionService) Save(ctx context.Context, transaction *entities.Tr
 	if existedTransaction != (entities.Transaction{}) {
 		return domain.ErrConflict
 	}
+	transaction.Value = utils.RoundValue2DecimalPlaces(transaction.Value)
 	return ts.transactionRepo.Save(ctx, transaction)
 }
 
@@ -36,8 +38,8 @@ func (ts *TransactionService) Fetch(ctx context.Context, cursor string, limit in
 	return transactions, nextCursor, nil
 }
 
-func (ts *TransactionService) GetByUId(ctx context.Context, uid string) (entities.Transaction, error) {
-	resptransaction, err := ts.transactionRepo.GetByUId(ctx, uid)
+func (ts *TransactionService) GetByUId(ctx context.Context, id string) (entities.Transaction, error) {
+	resptransaction, err := ts.transactionRepo.GetByUId(ctx, id)
 	if err != nil {
 		return entities.Transaction{}, err
 	}
@@ -45,17 +47,18 @@ func (ts *TransactionService) GetByUId(ctx context.Context, uid string) (entitie
 	return resptransaction, nil
 }
 
-func (ts *TransactionService) Update(ctx context.Context, ar *entities.Transaction) error {
-	return ts.transactionRepo.Update(ctx, ar)
+func (ts *TransactionService) Update(ctx context.Context, transaction *entities.Transaction) error {
+	transaction.Value = utils.RoundValue2DecimalPlaces(transaction.Value)
+	return ts.transactionRepo.Update(ctx, transaction)
 }
 
-func (ts *TransactionService) Delete(ctx context.Context, uid string) error {
-	existedTransaction, err := ts.transactionRepo.GetByUId(ctx, uid)
+func (ts *TransactionService) Delete(ctx context.Context, id string) error {
+	existedTransaction, err := ts.transactionRepo.GetByUId(ctx, id)
 	if err != nil {
 		return err
 	}
 	if existedTransaction == (entities.Transaction{}) {
 		return domain.ErrNotFound
 	}
-	return ts.transactionRepo.Delete(ctx, uid)
+	return ts.transactionRepo.Delete(ctx, id)
 }
