@@ -46,7 +46,7 @@ func TestExchange(t *testing.T) {
 	)
 
 	t.Run("Should exchange successfully", func(t *testing.T) {
-		mockTransactionRepo.On("GetByUId",
+		mockTransactionRepo.On("GetById",
 			mock.Anything, mock.AnythingOfType("string")).Return(mockTransaction, nil).Once()
 		mockExchangeRepo.On("GetExchange", mock.Anything,
 			mock.AnythingOfType("*entities.ExchangeRequestParams"),
@@ -61,7 +61,7 @@ func TestExchange(t *testing.T) {
 	})
 
 	t.Run("Should return a error when not found transaction", func(t *testing.T) {
-		mockTransactionRepo.On("GetByUId", mock.Anything,
+		mockTransactionRepo.On("GetById", mock.Anything,
 			mock.AnythingOfType("string")).Return(entities.Transaction{}, domain.ErrNotFound).Once()
 
 		exchangeService := services.NewExchangeService(
@@ -77,7 +77,7 @@ func TestExchange(t *testing.T) {
 	})
 
 	t.Run("Should return a error when internal server erro occurs", func(t *testing.T) {
-		mockTransactionRepo.On("GetByUId", mock.Anything,
+		mockTransactionRepo.On("GetById", mock.Anything,
 			mock.AnythingOfType("string")).Return(entities.Transaction{}, domain.ErrNotFound).Once()
 		mockExchangeRepo.On("GetExchange", mock.Anything,
 			mock.AnythingOfType("*entities.ExchangeRequestParams"),

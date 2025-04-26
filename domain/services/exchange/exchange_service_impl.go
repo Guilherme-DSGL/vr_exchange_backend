@@ -20,7 +20,7 @@ func NewExchangeService(exchangeRepo irepo.IExchangeRepository, transactionRepo 
 }
 
 func (es *ExchangeService) GetExchange(ctx context.Context, exchangeParams *entities.ExchangeGetParams) (entities.ExchangeTransaction, error) {
-	existedTransaction, err := es.transactionRepo.GetByUId(ctx, exchangeParams.UIdTranscation)
+	existedTransaction, err := es.transactionRepo.GetById(ctx, exchangeParams.UIdTranscation)
 
 	if existedTransaction == (entities.Transaction{}) {
 		return entities.ExchangeTransaction{}, err

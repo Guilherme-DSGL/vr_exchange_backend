@@ -68,7 +68,7 @@ func TestSave(t *testing.T) {
 	transactionService := services.NewTransactionService(mockRepo)
 
 	t.Run("Should save successfully", func(t *testing.T) {
-		mockRepo.On("GetByUId", mock.Anything, mock.AnythingOfType("string")).Return(entities.Transaction{}, domain.ErrNotFound).Once()
+		mockRepo.On("GetById", mock.Anything, mock.AnythingOfType("string")).Return(entities.Transaction{}, domain.ErrNotFound).Once()
 		mockRepo.On("Save", mock.Anything,
 			mock.AnythingOfType("*entities.Transaction")).Return(nil).Once()
 
@@ -80,7 +80,7 @@ func TestSave(t *testing.T) {
 	})
 
 	t.Run("Should return conflict error when exits the same transaction", func(t *testing.T) {
-		mockRepo.On("GetByUId", mock.Anything, mock.AnythingOfType("string")).Return(mockTransaction, nil).Once()
+		mockRepo.On("GetById", mock.Anything, mock.AnythingOfType("string")).Return(mockTransaction, nil).Once()
 
 		err := transactionService.Save(context.TODO(), &mockTransaction)
 
@@ -90,7 +90,7 @@ func TestSave(t *testing.T) {
 	})
 
 	t.Run("Should return a error when internal server error occurs ", func(t *testing.T) {
-		mockRepo.On("GetByUId", mock.Anything, mock.AnythingOfType("string")).Return(entities.Transaction{}, domain.ErrNotFound).Once()
+		mockRepo.On("GetById", mock.Anything, mock.AnythingOfType("string")).Return(entities.Transaction{}, domain.ErrNotFound).Once()
 		mockRepo.On("Save", mock.Anything,
 			mock.AnythingOfType("*entities.Transaction")).Return(domain.ErrInternalServerError).Once()
 
@@ -112,9 +112,9 @@ func TestGetByUId(t *testing.T) {
 	transactionService := services.NewTransactionService(mockRepo)
 
 	t.Run("Should get successfully", func(t *testing.T) {
-		mockRepo.On("GetByUId", mock.Anything, mock.AnythingOfType("string")).Return(mockTransaction, nil).Once()
+		mockRepo.On("GetById", mock.Anything, mock.AnythingOfType("string")).Return(mockTransaction, nil).Once()
 
-		response, err := transactionService.GetByUId(context.TODO(), mockTransaction.ID)
+		response, err := transactionService.GetById(context.TODO(), mockTransaction.ID)
 
 		assert.NoError(t, err)
 		assert.Equal(t, mockTransaction.ID, response.ID)
@@ -123,9 +123,9 @@ func TestGetByUId(t *testing.T) {
 	})
 
 	t.Run("Should return a error when internal server error occurs ", func(t *testing.T) {
-		mockRepo.On("GetByUId", mock.Anything, mock.AnythingOfType("string")).Return(entities.Transaction{}, domain.ErrInternalServerError).Once()
+		mockRepo.On("GetById", mock.Anything, mock.AnythingOfType("string")).Return(entities.Transaction{}, domain.ErrInternalServerError).Once()
 
-		response, err := transactionService.GetByUId(context.TODO(), mockTransaction.ID)
+		response, err := transactionService.GetById(context.TODO(), mockTransaction.ID)
 
 		assert.Error(t, err)
 		assert.Empty(t, response)
@@ -144,7 +144,7 @@ func TestDelete(t *testing.T) {
 	transactionService := services.NewTransactionService(mockRepo)
 
 	t.Run("Should delete successfully", func(t *testing.T) {
-		mockRepo.On("GetByUId", mock.Anything, mock.AnythingOfType("string")).Return(mockTransaction, nil).Once()
+		mockRepo.On("GetById", mock.Anything, mock.AnythingOfType("string")).Return(mockTransaction, nil).Once()
 		mockRepo.On("Delete", mock.Anything,
 			mock.AnythingOfType("string")).Return(nil).Once()
 
@@ -156,7 +156,7 @@ func TestDelete(t *testing.T) {
 	})
 
 	t.Run("Should return not found error when no exits the transaction", func(t *testing.T) {
-		mockRepo.On("GetByUId", mock.Anything, mock.AnythingOfType("string")).Return(entities.Transaction{}, domain.ErrNotFound).Once()
+		mockRepo.On("GetById", mock.Anything, mock.AnythingOfType("string")).Return(entities.Transaction{}, domain.ErrNotFound).Once()
 
 		err := transactionService.Delete(context.TODO(), mockTransaction.ID)
 
@@ -166,7 +166,7 @@ func TestDelete(t *testing.T) {
 	})
 
 	t.Run("Should return a error when internal server error occurs ", func(t *testing.T) {
-		mockRepo.On("GetByUId", mock.Anything, mock.AnythingOfType("string")).Return(mockTransaction, nil).Once()
+		mockRepo.On("GetById", mock.Anything, mock.AnythingOfType("string")).Return(mockTransaction, nil).Once()
 		mockRepo.On("Delete", mock.Anything,
 			mock.AnythingOfType("string")).Return(domain.ErrInternalServerError).Once()
 

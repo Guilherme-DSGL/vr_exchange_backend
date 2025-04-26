@@ -69,12 +69,12 @@ func (_m *ITransactionService) Fetch(ctx context.Context, cursor string, limit i
 	return r0, r1, r2
 }
 
-// GetByUId provides a mock function with given fields: ctx, id
-func (_m *ITransactionService) GetByUId(ctx context.Context, id string) (entities.Transaction, error) {
+// GetById provides a mock function with given fields: ctx, id
+func (_m *ITransactionService) GetById(ctx context.Context, id string) (entities.Transaction, error) {
 	ret := _m.Called(ctx, id)
 
 	if len(ret) == 0 {
-		panic("no return value specified for GetByUId")
+		panic("no return value specified for GetById")
 	}
 
 	var r0 entities.Transaction

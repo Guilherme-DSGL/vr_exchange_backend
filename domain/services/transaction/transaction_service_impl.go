@@ -21,7 +21,7 @@ func NewTransactionService(transactionRepo irepo.ITransactionRepository) *Transa
 }
 
 func (ts *TransactionService) Save(ctx context.Context, transaction *entities.Transaction) error {
-	existedTransaction, _ := ts.GetByUId(ctx, transaction.ID)
+	existedTransaction, _ := ts.GetById(ctx, transaction.ID)
 
 	if existedTransaction != (entities.Transaction{}) {
 		return domain.ErrConflict
@@ -40,8 +40,8 @@ func (ts *TransactionService) Fetch(ctx context.Context, cursor string, limit in
 	return transactions, nextCursor, nil
 }
 
-func (ts *TransactionService) GetByUId(ctx context.Context, id string) (entities.Transaction, error) {
-	resptransaction, err := ts.transactionRepo.GetByUId(ctx, id)
+func (ts *TransactionService) GetById(ctx context.Context, id string) (entities.Transaction, error) {
+	resptransaction, err := ts.transactionRepo.GetById(ctx, id)
 	if err != nil {
 		return entities.Transaction{}, err
 	}
@@ -56,7 +56,7 @@ func (ts *TransactionService) Update(ctx context.Context, transaction *entities.
 }
 
 func (ts *TransactionService) Delete(ctx context.Context, id string) error {
-	existedTransaction, err := ts.transactionRepo.GetByUId(ctx, id)
+	existedTransaction, err := ts.transactionRepo.GetById(ctx, id)
 	if err != nil {
 		return err
 	}
