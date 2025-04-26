@@ -74,9 +74,9 @@ func TestTransactionHandler(t *testing.T) {
 		mockUCase.AssertExpectations(t)
 	})
 
-	t.Run("Should GetByUId return status 200", func(t *testing.T) {
+	t.Run("Should GetById return status 200", func(t *testing.T) {
 		id := uuid.NewString()
-		mockUCase.On("GetByUId", mock.Anything, mock.AnythingOfType("string")).Return(mockTransaction, nil).Once()
+		mockUCase.On("GetById", mock.Anything, mock.AnythingOfType("string")).Return(mockTransaction, nil).Once()
 
 		e := echo.New()
 		rest.NewTransactionHandler(e, mockUCase)
@@ -91,9 +91,9 @@ func TestTransactionHandler(t *testing.T) {
 		mockUCase.AssertExpectations(t)
 	})
 
-	t.Run("Should GetByUId return a error", func(t *testing.T) {
+	t.Run("Should GetById return a error", func(t *testing.T) {
 		id := uuid.NewString()
-		mockUCase.On("GetByUId",
+		mockUCase.On("GetById",
 			mock.Anything,
 			mock.AnythingOfType("string")).Return(mockTransaction, domain.ErrInternalServerError).Once()
 

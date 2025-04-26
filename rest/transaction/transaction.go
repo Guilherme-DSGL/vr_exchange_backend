@@ -23,7 +23,7 @@ func NewTransactionHandler(e *echo.Echo, ts ts.ITransactionService) {
 	}
 	e.GET("/transaction", handler.FetchTransaction)
 	e.POST("/transaction", handler.Save)
-	e.GET("/transaction/:id", handler.GetByUId)
+	e.GET("/transaction/:id", handler.GetById)
 	e.DELETE("/transaction/:id", handler.Delete)
 }
 
@@ -46,11 +46,11 @@ func (th *TransactionHandler) FetchTransaction(context echo.Context) error {
 	return context.JSON(http.StatusOK, listAr)
 }
 
-func (th *TransactionHandler) GetByUId(context echo.Context) error {
+func (th *TransactionHandler) GetById(context echo.Context) error {
 	id := context.Param("id")
 	ctx := context.Request().Context()
 
-	art, err := th.Ts.GetByUId(ctx, id)
+	art, err := th.Ts.GetById(ctx, id)
 	if err != nil {
 		return context.JSON(rest.GetStatusCode(err), rest.ResponseError{Message: err.Error()})
 	}
