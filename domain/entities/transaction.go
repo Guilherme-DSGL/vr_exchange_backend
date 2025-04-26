@@ -1,9 +1,11 @@
-package domain
+package entities
 
 import (
 	"math"
 	"strings"
 	"time"
+
+	"github.com/Guilherme-DSGL/purchase_transaction_backend/domain"
 )
 
 type Transaction struct {
@@ -39,7 +41,7 @@ func NewTransaction(uId string, description string, date time.Time, value float6
 
 func validateTransactionID(id string) error {
 	if id == "" {
-		return ErrTransactionEmptyID
+		return domain.ErrTransactionEmptyID
 	}
 	return nil
 }
@@ -47,24 +49,24 @@ func validateTransactionID(id string) error {
 func validateTransactionDescription(description string) error {
 	description = strings.TrimSpace(description)
 	if description == "" {
-		return ErrTransactionEmptyDescription
+		return domain.ErrTransactionEmptyDescription
 	}
 	if len(description) > 50 {
-		return ErrTransactionTooLongDescription
+		return domain.ErrTransactionTooLongDescription
 	}
 	return nil
 }
 
 func validateTransactionDate(date time.Time) error {
 	if date.IsZero() {
-		return ErrTransactionInvalidDate
+		return domain.ErrTransactionInvalidDate
 	}
 	return nil
 }
 
 func validateTransactionValue(value float64) error {
 	if value <= 0 {
-		return ErrTransactionInvalidValue
+		return domain.ErrTransactionInvalidValue
 	}
 	return nil
 }

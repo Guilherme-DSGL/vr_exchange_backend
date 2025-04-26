@@ -1,8 +1,11 @@
-package domain
+package entities
+
+import "time"
 
 type ExchangeTransaction struct {
 	Transaction    Transaction    `json:"transaction"`
 	CountryCurreny CountryCurreny `json:"country_currency"`
+	EfectiveDate   time.Time      `json:"efective_date"`
 	Rate           float64        `json:"rate"`
 	ConvertedValue float64        `json:"converted_value"`
 }

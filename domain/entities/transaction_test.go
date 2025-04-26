@@ -1,4 +1,4 @@
-package domain_test
+package entities_test
 
 import (
 	"strings"
@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/Guilherme-DSGL/purchase_transaction_backend/domain"
+	"github.com/Guilherme-DSGL/purchase_transaction_backend/domain/entities"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 )
@@ -13,7 +14,7 @@ import (
 func TestNewService(t *testing.T) {
 
 	t.Run("Shoud return a valid transcation", func(t *testing.T) {
-		transaction, err := domain.NewTransaction(
+		transaction, err := entities.NewTransaction(
 			uuid.NewString(),
 			"A valid description",
 			time.Now(),
@@ -25,7 +26,7 @@ func TestNewService(t *testing.T) {
 	})
 
 	t.Run("Shoud return error when value is negative", func(t *testing.T) {
-		transaction, err := domain.NewTransaction(
+		transaction, err := entities.NewTransaction(
 			uuid.NewString(),
 			"A valid description",
 			time.Now(),
@@ -38,7 +39,7 @@ func TestNewService(t *testing.T) {
 	})
 
 	t.Run("Shoud return error when value is invalid format", func(t *testing.T) {
-		transaction, err := domain.NewTransaction(
+		transaction, err := entities.NewTransaction(
 			uuid.NewString(),
 			"A valid description",
 			time.Now(),
@@ -51,7 +52,7 @@ func TestNewService(t *testing.T) {
 	})
 
 	t.Run("Shoud return error when description is empty", func(t *testing.T) {
-		transaction, err := domain.NewTransaction(
+		transaction, err := entities.NewTransaction(
 			uuid.NewString(),
 			"",
 			time.Now(),
@@ -66,7 +67,7 @@ func TestNewService(t *testing.T) {
 
 	t.Run("Shoud return error when description is longer than 50 characters", func(t *testing.T) {
 		invalidDescription := strings.Repeat("a", 51)
-		transaction, err := domain.NewTransaction(
+		transaction, err := entities.NewTransaction(
 			uuid.NewString(),
 			invalidDescription,
 			time.Now(),
@@ -79,7 +80,7 @@ func TestNewService(t *testing.T) {
 	})
 
 	t.Run("Shoud return error when uid is empty", func(t *testing.T) {
-		transaction, err := domain.NewTransaction(
+		transaction, err := entities.NewTransaction(
 			"",
 			"",
 			time.Time{},
@@ -92,7 +93,7 @@ func TestNewService(t *testing.T) {
 	})
 
 	t.Run("Shoud return error when date is valid", func(t *testing.T) {
-		transaction, err := domain.NewTransaction(
+		transaction, err := entities.NewTransaction(
 			uuid.NewString(),
 			"A valid description",
 			time.Time{},

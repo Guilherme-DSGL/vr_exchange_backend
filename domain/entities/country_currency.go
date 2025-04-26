@@ -1,4 +1,4 @@
-package domain
+package entities
 
 type CountryCurreny struct {
 	Country  string `json:"country"`
