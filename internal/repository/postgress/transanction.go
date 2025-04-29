@@ -8,6 +8,7 @@ import (
 	"github.com/Guilherme-DSGL/purchase_transaction_backend/domain"
 	"github.com/Guilherme-DSGL/purchase_transaction_backend/domain/entities"
 	"github.com/Guilherme-DSGL/purchase_transaction_backend/internal/repository"
+	_ "github.com/lib/pq"
 	"github.com/sirupsen/logrus"
 )
 
@@ -56,8 +57,7 @@ func (m *TransactionRepository) fetch(ctx context.Context, query string, args ..
 }
 
 func (m *TransactionRepository) Fetch(ctx context.Context, cursor string, num int64) (res []entities.Transaction, nextCursor string, err error) {
-	query := `SELECT id, description, date, value, updated_at, created_at
-  						FROM transaction WHERE created_at > ? ORDER BY created_at LIMIT ? `
+	query := `SELECT id, description, date, value, updated_at, created_at FROM transaction WHERE created_at > $1 ORDER BY created_at LIMIT $2`
 
 	decodedCursor, err := repository.DecodeCursor(cursor)
 	if err != nil && cursor != "" {
@@ -77,8 +77,7 @@ func (m *TransactionRepository) Fetch(ctx context.Context, cursor string, num in
 }
 
 func (m *TransactionRepository) GetById(ctx context.Context, id string) (res entities.Transaction, err error) {
-	query := `SELECT id, description, date, value, updated_at, created_at
-  						FROM transaction WHERE ID = ?`
+	query := `SELECT id, description, date, value, updated_at, created_at FROM transaction WHERE ID = $1`
 
 	list, err := m.fetch(ctx, query, id)
 	if err != nil {
@@ -95,7 +94,7 @@ func (m *TransactionRepository) GetById(ctx context.Context, id string) (res ent
 }
 
 func (m *TransactionRepository) Save(ctx context.Context, t *entities.Transaction) (err error) {
-	query := `INSERT transaction SET id=?, description=?, date=?, value=?, updated_at=?, created_at=?`
+	query := `INSERT INTO transaction (id, description, date, value, updated_at, created_at) VALUES ($1, $2, $3, $4, $5, $6)`
 	stmt, err := m.Conn.PrepareContext(ctx, query)
 	if err != nil {
 		return
@@ -119,7 +118,7 @@ func (m *TransactionRepository) Save(ctx context.Context, t *entities.Transactio
 }
 
 func (m *TransactionRepository) Delete(ctx context.Context, id string) (err error) {
-	query := "DELETE FROM transaction WHERE id = ?"
+	query := "DELETE FROM transaction WHERE id = $1"
 
 	stmt, err := m.Conn.PrepareContext(ctx, query)
 	if err != nil {
@@ -145,7 +144,7 @@ func (m *TransactionRepository) Delete(ctx context.Context, id string) (err erro
 }
 
 func (m *TransactionRepository) Update(ctx context.Context, t *entities.Transaction) (err error) {
-	query := `UPDATE transaction SET description=?, date=?, value=?, updated_at=? WHERE ID = ?`
+	query := `UPDATE transaction SET description=$1, date=$2, value=$3, updated_at=$4 WHERE ID = $5`
 
 	stmt, err := m.Conn.PrepareContext(ctx, query)
 	if err != nil {
