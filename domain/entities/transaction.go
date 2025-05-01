@@ -4,6 +4,8 @@ import (
 	"time"
 )
 
+// Transaction represents a purchase transaction.
+// @Description Purchase transaction with value, date, and description.
 type Transaction struct {
 	ID          string    `json:"id" validate:"required"`
 	Description string    `json:"description" validate:"required,max=50"`

@@ -18,6 +18,8 @@ func GetStatusCode(err error) int {
 
 	logrus.Error(err)
 	switch err {
+	case domain.ErrBadParamInput:
+		return http.StatusBadRequest
 	case domain.ErrNotFound:
 		return http.StatusNotFound
 	case domain.ErrConflict:

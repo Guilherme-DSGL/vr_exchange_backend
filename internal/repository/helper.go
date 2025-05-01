@@ -3,10 +3,8 @@ package repository
 import (
 	"encoding/base64"
 	"time"
-)
 
-const (
-	timeFormat = "2006-01-02T15:04:05.999Z07:00"
+	"github.com/Guilherme-DSGL/purchase_transaction_backend/utils"
 )
 
 func DecodeCursor(encodedTime string) (time.Time, error) {
@@ -16,13 +14,13 @@ func DecodeCursor(encodedTime string) (time.Time, error) {
 	}
 
 	timeString := string(byt)
-	t, err := time.Parse(timeFormat, timeString)
+	t, err := time.Parse(utils.DateTimeFormat, timeString)
 
 	return t, err
 }
 
 func EncodeCursor(t time.Time) string {
-	timeString := t.Format(timeFormat)
+	timeString := t.Format(utils.DateTimeFormat)
 
 	return base64.StdEncoding.EncodeToString([]byte(timeString))
 }

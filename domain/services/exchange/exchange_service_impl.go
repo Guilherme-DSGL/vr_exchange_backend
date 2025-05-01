@@ -3,8 +3,10 @@ package services
 import (
 	"context"
 
+	"github.com/Guilherme-DSGL/purchase_transaction_backend/domain"
 	"github.com/Guilherme-DSGL/purchase_transaction_backend/domain/entities"
 	irepo "github.com/Guilherme-DSGL/purchase_transaction_backend/domain/repositories"
+	"github.com/Guilherme-DSGL/purchase_transaction_backend/utils"
 )
 
 type ExchangeService struct {
@@ -20,22 +22,35 @@ func NewExchangeService(exchangeRepo irepo.IExchangeRepository, transactionRepo 
 }
 
 func (es *ExchangeService) GetExchange(ctx context.Context, exchangeParams *entities.ExchangeGetParams) (entities.ExchangeTransaction, error) {
-	existedTransaction, err := es.transactionRepo.GetById(ctx, exchangeParams.UIdTranscation)
+	existedTransaction, err := es.transactionRepo.GetById(ctx, exchangeParams.IdTranscation)
 
-	if existedTransaction == (entities.Transaction{}) {
-		return entities.ExchangeTransaction{}, err
+	if err == domain.ErrNotFound {
+		return entities.ExchangeTransaction{}, domain.ErrBadParamInput
 	}
 
+	if err != nil {
+		return entities.ExchangeTransaction{}, domain.ErrInternalServerError
+	}
+
+	endDate := existedTransaction.Date.Format(utils.DateFormat)
+	lastSixMonths := -6
+	startDate := existedTransaction.Date.AddDate(0, lastSixMonths, 0).Format(utils.DateFormat)
 	params := &entities.ExchangeRequestParams{
 		CountryCurrency: exchangeParams.CountryCurrency,
 		Value:           existedTransaction.Value,
-		Date:            existedTransaction.Date,
+		StartDate:       startDate,
+		EndDate:         endDate,
 	}
 
 	exchangeTransaction, err := es.exchangeRepo.GetExchange(ctx, params)
+	exchangeTransaction.Transaction = existedTransaction
+
+	if err == domain.ErrNotFound {
+		return entities.ExchangeTransaction{}, err
+	}
 
 	if err != nil {
-		return entities.ExchangeTransaction{}, err
+		return entities.ExchangeTransaction{}, domain.ErrInternalServerError
 	}
 	return exchangeTransaction, nil
 }

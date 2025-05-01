@@ -29,7 +29,7 @@ func TestExchange(t *testing.T) {
 		Value:       4.0,
 	}
 	mockGetParams := entities.ExchangeGetParams{
-		UIdTranscation:  mockTransaction.ID,
+		IdTranscation:   mockTransaction.ID,
 		CountryCurrency: mockCountryCurrency,
 	}
 	mockExchangeTransaction := entities.ExchangeTransaction{
@@ -71,14 +71,14 @@ func TestExchange(t *testing.T) {
 
 		exchangeTransaction, err := exchangeService.GetExchange(context.TODO(), &mockGetParams)
 		assert.Error(t, err)
-		assert.Equal(t, domain.ErrNotFound, err)
+		assert.Equal(t, domain.ErrBadParamInput, err)
 		assert.Empty(t, exchangeTransaction)
 		mockTransactionRepo.AssertExpectations(t)
 	})
 
 	t.Run("Should return a error when internal server erro occurs", func(t *testing.T) {
 		mockTransactionRepo.On("GetById", mock.Anything,
-			mock.AnythingOfType("string")).Return(entities.Transaction{}, domain.ErrNotFound).Once()
+			mock.AnythingOfType("string")).Return(entities.Transaction{}, domain.ErrInternalServerError).Once()
 		mockExchangeRepo.On("GetExchange", mock.Anything,
 			mock.AnythingOfType("*entities.ExchangeRequestParams"),
 		).Return(entities.ExchangeTransaction{}, domain.ErrInternalServerError)
@@ -89,7 +89,7 @@ func TestExchange(t *testing.T) {
 
 		exchangeTransaction, err := exchangeService.GetExchange(context.TODO(), &mockGetParams)
 		assert.Error(t, err)
-		assert.Equal(t, domain.ErrNotFound, err)
+		assert.Equal(t, domain.ErrInternalServerError, err)
 		assert.Empty(t, exchangeTransaction)
 		mockTransactionRepo.AssertExpectations(t)
 		mockExchangeRepo.AssertExpectations(t)

@@ -4,26 +4,29 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"strconv"
 	"time"
 
+	_ "github.com/Guilherme-DSGL/purchase_transaction_backend/docs"
+	exchangeServ "github.com/Guilherme-DSGL/purchase_transaction_backend/domain/services/exchange"
 	transactionServ "github.com/Guilherme-DSGL/purchase_transaction_backend/domain/services/transaction"
+	exchangeRepo "github.com/Guilherme-DSGL/purchase_transaction_backend/internal/repository/exchange_api"
 	postgressRepo "github.com/Guilherme-DSGL/purchase_transaction_backend/internal/repository/postgress"
 	"github.com/Guilherme-DSGL/purchase_transaction_backend/rest/middleware"
 	transactionRest "github.com/Guilherme-DSGL/purchase_transaction_backend/rest/transaction"
 	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	_ "github.com/lib/pq"
+	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
-func init() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error .env file not found")
-	}
-}
-
+// @title VR Exchange API
+// @version 1.0
+// @description API to persist transactions and convert the value to currencies of other countries
+// @host localhost:8080
+// @BasePath /api/v1
 func main() {
 	dbConn := initDb()
 	defer func() {
@@ -34,6 +37,9 @@ func main() {
 	}()
 
 	e := echo.New()
+
+	e.GET("/swagger/*", echoSwagger.WrapHandler)
+
 	e.Use(middleware.CORS)
 	connectionTimeout := os.Getenv("CONNECTION_TIMEOUT")
 
@@ -42,14 +48,21 @@ func main() {
 		log.Fatal("timout failed to parse as int")
 		return
 	}
-
 	timeoutDuration := time.Duration(timeout) * time.Second
 	e.Use(middleware.SetRequestContextTimeout(timeoutDuration))
 
-	initDependencies(dbConn, e)
+	apiGroup := e.Group("/api/v1")
+	initDependencies(dbConn, apiGroup)
 
 	address := os.Getenv("SERVER_ADDRESS")
 	log.Fatal(e.Start(address))
+}
+
+func init() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error .env file not found")
+	}
 }
 
 func initDb() *sql.DB {
@@ -72,11 +85,14 @@ func initDb() *sql.DB {
 	return dbConn
 }
 
-func initDependencies(dbConn *sql.DB, e *echo.Echo) {
+func initDependencies(dbConn *sql.DB, e *echo.Group) {
+
+	httpClient := &http.Client{Timeout: 10 * time.Second}
 	//  Repositories
 	transactioRepo := postgressRepo.NewTransactionRepository(dbConn)
-
+	exchangeRepo := exchangeRepo.NewExchangeRepository(httpClient)
 	// Services
-	svc := transactionServ.NewTransactionService(transactioRepo)
-	transactionRest.NewTransactionHandler(e, svc)
+	tServ := transactionServ.NewTransactionService(transactioRepo)
+	eServ := exchangeServ.NewExchangeService(exchangeRepo, transactioRepo)
+	transactionRest.NewTransactionHandler(e, tServ, eServ)
 }

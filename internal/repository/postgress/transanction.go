@@ -97,7 +97,7 @@ func (m *TransactionRepository) Save(ctx context.Context, t *entities.Transactio
 	query := `INSERT INTO transaction (id, description, date, value, updated_at, created_at) VALUES ($1, $2, $3, $4, $5, $6)`
 	stmt, err := m.Conn.PrepareContext(ctx, query)
 	if err != nil {
-		return
+		return err
 	}
 
 	res, err := stmt.ExecContext(ctx, t.ID, t.Description, t.Date, t.Value, t.UpdatedAt, t.CreatedAt)

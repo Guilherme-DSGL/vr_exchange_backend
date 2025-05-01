@@ -15,8 +15,31 @@ type IExchangeService struct {
 }
 
 // GetExchange provides a mock function with given fields: ctx, exchangeParams
-func (_m *IExchangeService) GetExchange(ctx context.Context, exchangeParams *entities.ExchangeGetParams) {
-	_m.Called(ctx, exchangeParams)
+func (_m *IExchangeService) GetExchange(ctx context.Context, exchangeParams *entities.ExchangeGetParams) (entities.ExchangeTransaction, error) {
+	ret := _m.Called(ctx, exchangeParams)
+
+	if len(ret) == 0 {
+		panic("no return value specified for GetExchange")
+	}
+
+	var r0 entities.ExchangeTransaction
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, *entities.ExchangeGetParams) (entities.ExchangeTransaction, error)); ok {
+		return rf(ctx, exchangeParams)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, *entities.ExchangeGetParams) entities.ExchangeTransaction); ok {
+		r0 = rf(ctx, exchangeParams)
+	} else {
+		r0 = ret.Get(0).(entities.ExchangeTransaction)
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, *entities.ExchangeGetParams) error); ok {
+		r1 = rf(ctx, exchangeParams)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
 }
 
 // NewIExchangeService creates a new instance of IExchangeService. It also registers a testing interface on the mock and a cleanup function to assert the mocks expectations.
