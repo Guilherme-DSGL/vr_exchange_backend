@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:17
+    restart: always
+    environment:
+      POSTGRES_USER: ${USER_DATABASE}
+      POSTGRES_PASSWORD: ${PASS_DATABASE}
+      POSTGRES_DB: ${NAME_DATABASE}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./vr_exchange.sql:/docker-entrypoint-initdb.d/vr_exchange.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${USER_DATABASE} -d ${NAME_DATABASE}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_HOST: ${HOST_DATABASE}
+      DB_PORT: ${PORT_DATABASE}
+      DB_USER: ${USER_DATABASE}
+      DB_PASSWORD: ${PASS_DATABASE}
+      DB_NAME: ${NAME_DATABASE}
+      DEBUG: ${DEBUG}
+
+volumes:
+  postgres_data:
