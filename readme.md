@@ -94,7 +94,13 @@ go test ./...
 
 ### How to Run
 
-1. Define a .env file with the default inside /app
+1. Clone the repository
+
+```bash
+git clone https://github.com/Guilherme-DSGL/vr_exchange_backend.git
+```
+
+2. Define a .env file with the default inside /app
 
 ```.env
 # DB
@@ -111,7 +117,7 @@ CONNECTION_TIMEOUT = 2
 DEBUG = "TRUE"
 ```
 
-2. The application has been containerized and just run the command with docker already installed to build the application
+3. The application has been containerized and just run the command with docker already installed to build the application
 
 ```bash
 docker compose --env-file ./app/.env up --build
