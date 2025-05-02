@@ -4,10 +4,10 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/Guilherme-DSGL/purchase_transaction_backend/domain/entities"
-	es "github.com/Guilherme-DSGL/purchase_transaction_backend/domain/services/exchange"
-	ts "github.com/Guilherme-DSGL/purchase_transaction_backend/domain/services/transaction"
-	"github.com/Guilherme-DSGL/purchase_transaction_backend/rest"
+	"github.com/Guilherme-DSGL/vr_exchange_backend/domain/entities"
+	es "github.com/Guilherme-DSGL/vr_exchange_backend/domain/services/exchange"
+	ts "github.com/Guilherme-DSGL/vr_exchange_backend/domain/services/transaction"
+	"github.com/Guilherme-DSGL/vr_exchange_backend/rest"
 	"github.com/labstack/echo/v4"
 	validator "gopkg.in/go-playground/validator.v9"
 )

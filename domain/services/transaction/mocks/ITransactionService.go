@@ -5,7 +5,7 @@ package mocks
 import (
 	context "context"
 
-	entities "github.com/Guilherme-DSGL/purchase_transaction_backend/domain/entities"
+	entities "github.com/Guilherme-DSGL/vr_exchange_backend/domain/entities"
 	mock "github.com/stretchr/testify/mock"
 )
 

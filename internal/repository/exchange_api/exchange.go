@@ -8,10 +8,10 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/Guilherme-DSGL/purchase_transaction_backend/domain"
-	"github.com/Guilherme-DSGL/purchase_transaction_backend/domain/entities"
-	rest "github.com/Guilherme-DSGL/purchase_transaction_backend/internal/http_adapter"
-	"github.com/Guilherme-DSGL/purchase_transaction_backend/utils"
+	"github.com/Guilherme-DSGL/vr_exchange_backend/domain"
+	"github.com/Guilherme-DSGL/vr_exchange_backend/domain/entities"
+	rest "github.com/Guilherme-DSGL/vr_exchange_backend/internal/http_adapter"
+	"github.com/Guilherme-DSGL/vr_exchange_backend/utils"
 )
 
 var (

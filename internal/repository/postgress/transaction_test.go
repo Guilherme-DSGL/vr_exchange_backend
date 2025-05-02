@@ -5,10 +5,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Guilherme-DSGL/purchase_transaction_backend/domain/entities"
-	"github.com/Guilherme-DSGL/purchase_transaction_backend/internal/repository"
+	"github.com/Guilherme-DSGL/vr_exchange_backend/domain/entities"
+	"github.com/Guilherme-DSGL/vr_exchange_backend/internal/repository"
 
-	postgressRepo "github.com/Guilherme-DSGL/purchase_transaction_backend/internal/repository/postgress"
+	postgressRepo "github.com/Guilherme-DSGL/vr_exchange_backend/internal/repository/postgress"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/DATA-DOG/go-sqlmock.v1"

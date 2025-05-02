@@ -3,7 +3,7 @@ package services
 import (
 	"context"
 
-	"github.com/Guilherme-DSGL/purchase_transaction_backend/domain/entities"
+	"github.com/Guilherme-DSGL/vr_exchange_backend/domain/entities"
 )
 
 // Represents the business logic for handling exchange operations.

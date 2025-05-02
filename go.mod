@@ -1,4 +1,4 @@
-module github.com/Guilherme-DSGL/purchase_transaction_backend
+module github.com/Guilherme-DSGL/vr_exchange_backend
 
 go 1.24.2
 

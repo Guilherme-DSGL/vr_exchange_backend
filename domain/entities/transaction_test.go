@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Guilherme-DSGL/purchase_transaction_backend/domain/entities"
-	"github.com/Guilherme-DSGL/purchase_transaction_backend/utils"
+	"github.com/Guilherme-DSGL/vr_exchange_backend/domain/entities"
+	"github.com/Guilherme-DSGL/vr_exchange_backend/utils"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/go-playground/validator.v9"

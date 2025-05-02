@@ -4,7 +4,7 @@ import (
 	"encoding/base64"
 	"time"
 
-	"github.com/Guilherme-DSGL/purchase_transaction_backend/utils"
+	"github.com/Guilherme-DSGL/vr_exchange_backend/utils"
 )
 
 func DecodeCursor(encodedTime string) (time.Time, error) {

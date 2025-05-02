@@ -4,10 +4,10 @@ import (
 	"context"
 	"time"
 
-	"github.com/Guilherme-DSGL/purchase_transaction_backend/domain"
-	"github.com/Guilherme-DSGL/purchase_transaction_backend/domain/entities"
-	irepo "github.com/Guilherme-DSGL/purchase_transaction_backend/domain/repositories"
-	"github.com/Guilherme-DSGL/purchase_transaction_backend/utils"
+	"github.com/Guilherme-DSGL/vr_exchange_backend/domain"
+	"github.com/Guilherme-DSGL/vr_exchange_backend/domain/entities"
+	irepo "github.com/Guilherme-DSGL/vr_exchange_backend/domain/repositories"
+	"github.com/Guilherme-DSGL/vr_exchange_backend/utils"
 	"github.com/google/uuid"
 )
 

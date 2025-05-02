@@ -5,9 +5,9 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/Guilherme-DSGL/purchase_transaction_backend/domain"
-	"github.com/Guilherme-DSGL/purchase_transaction_backend/domain/entities"
-	"github.com/Guilherme-DSGL/purchase_transaction_backend/internal/repository"
+	"github.com/Guilherme-DSGL/vr_exchange_backend/domain"
+	"github.com/Guilherme-DSGL/vr_exchange_backend/domain/entities"
+	"github.com/Guilherme-DSGL/vr_exchange_backend/internal/repository"
 	_ "github.com/lib/pq"
 	"github.com/sirupsen/logrus"
 )

@@ -3,7 +3,7 @@ package rest
 import (
 	"net/http"
 
-	"github.com/Guilherme-DSGL/purchase_transaction_backend/domain"
+	"github.com/Guilherme-DSGL/vr_exchange_backend/domain"
 	"github.com/sirupsen/logrus"
 )
 
